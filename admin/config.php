@@ -1,18 +1,32 @@
 <?php
+// Check if SSL
+if ((isset($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == '1'))) || $_SERVER['SERVER_PORT'] == 443) {
+    $protocol = 'https://';
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
+}
+
+// HOST
+define('HOST_OPENCART', $_SERVER['HTTP_HOST'] . '/');
+define('PROTOCOL_OPENCART', $protocol);
+
 // HTTP
-define('HTTP_SERVER', 'http://opencart.local/admin/');
-define('HTTP_CATALOG', 'http://opencart.local/');
+define('HTTP_SERVER', PROTOCOL_OPENCART .HOST_OPENCART . 'admin/');
+define('HTTP_CATALOG', PROTOCOL_OPENCART . HOST_OPENCART);
 
 // HTTPS
-define('HTTPS_SERVER', 'http://opencart.local/admin/');
-define('HTTPS_CATALOG', 'http://opencart.local/');
+define('HTTPS_SERVER', PROTOCOL_OPENCART .HOST_OPENCART . 'admin/');
+define('HTTPS_CATALOG', PROTOCOL_OPENCART . HOST_OPENCART);
 
 // DIR
-define('DIR_APPLICATION', 'C:/OSPanel/domains/opencart.local/admin/');
-define('DIR_SYSTEM', 'C:/OSPanel/domains/opencart.local/system/');
-define('DIR_IMAGE', 'C:/OSPanel/domains/opencart.local/image/');
+define('DIR_OPENCART', addslashes(str_replace('\\', '/', realpath(dirname(__FILE__) . '/../') . '/')));
+define('DIR_APPLICATION', DIR_OPENCART . 'admin/');
+define('DIR_SYSTEM', DIR_OPENCART . 'system/');
+define('DIR_IMAGE', DIR_OPENCART . 'image/');
 define('DIR_STORAGE', DIR_SYSTEM . 'storage/');
-define('DIR_CATALOG', 'C:/OSPanel/domains/opencart.local/catalog/');
+define('DIR_CATALOG', DIR_OPENCART . 'catalog/');
 define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
 define('DIR_TEMPLATE', DIR_APPLICATION . 'view/template/');
 define('DIR_CONFIG', DIR_SYSTEM . 'config/');
